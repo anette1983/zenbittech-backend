@@ -1,5 +1,6 @@
-const { getAllDeals } = require("./deals");
+const { getAllDeals, addDeal } = require("./deals");
 
 module.exports = {
   getAllDeals,
+  addDeal,
 };

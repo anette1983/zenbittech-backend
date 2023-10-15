@@ -14,7 +14,8 @@ const { SECRET_KEY, BASE_URL } = process.env;
 
 const register = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  // const user = await User.findOne({ email });
+  const user = await User.findOne({ where: { email } });
   if (user) {
     throw HttpError(409, "Email already in use");
   }
@@ -47,17 +48,24 @@ const register = async (req, res) => {
 
 const verifyEmail = async (req, res) => {
   const { verificationToken } = req.params;
-  const user = await User.findOne({ verificationToken });
+  // const user = await User.findOne({ verificationToken });
+  const user = await User.findOne({ where: { verificationToken } });
   if (!user) {
     throw HttpError(404, "User not found");
   }
-  // if (user.verify) {
-  //   throw HttpError(404, "Email is already verified");
-  // }
-  await User.findByIdAndUpdate(user._id, {
-    verify: true,
-    verificationToken: null,
-  });
+  if (user.verify) {
+    throw HttpError(404, "Email is already verified");
+  }
+  // await User.findByIdAndUpdate(user._id, {
+  //   verify: true,
+  //   verificationToken: null,
+  // });
+  await User.update(
+    { verify: true, verificationToken: null },
+    {
+      where: { id: user.id }, // Assuming your primary key is named 'id'
+    }
+  );
   res.json({
     message: "Email verified successfully",
   });
@@ -65,7 +73,8 @@ const verifyEmail = async (req, res) => {
 
 const resendVerifyEmail = async (req, res) => {
   const { email } = req.body;
-  const user = await User.findOne({ email });
+  // const user = await User.findOne({ email });
+  const user = await User.findOne({ where: { email } });
   if (!user) {
     throw HttpError(404, "Email not found");
   }
@@ -96,12 +105,16 @@ const login = async (req, res) => {
   if (!passwordCompare) {
     throw HttpError(401, "Email or password is wrong");
   }
+
   const payload = {
-    id: user._id,
+    id: user.id,
   };
 
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
-  await User.findByIdAndUpdate(user._id, { token });
+  // await User.findByIdAndUpdate(user._id, { token });
+  user.token = token;
+  await user.save();
+  // await User.update({ token }, { where: { id } });
   res.json({
     token,
     user: {
@@ -121,9 +134,16 @@ const getCurrent = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-  const { _id } = req.user;
+  const { id } = req.user;
   // цей параметр є у об'єкті юзера, який робить запит, нічого додатково вводити не треба
-  await User.findByIdAndUpdate(_id, { token: "" });
+  // await User.findByIdAndUpdate(_id, { token: "" });
+  // await User.update({ token: "" }, { where: { id } });
+  const user = await User.findOne({ where: { id } });
+  if (user) {
+    user.token = null;
+    await user.save();
+  }
+
   res.status(204).json({
     message: "Logout success",
   });
@@ -182,3 +202,14 @@ module.exports = {
   // updateSubscription: ctrlWrapper(updateSubscription),
   // updateAvatar: ctrlWrapper(updateAvatar),
 };
+
+
+// const createDeal = async (deal) => {
+//   await Deal.create({
+//     ...deal,
+//   });
+// };
+
+// createDeal(deals[0]);
+
+// [{ deal1 }, { deal2 }].forEach(createDeal);

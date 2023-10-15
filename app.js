@@ -1,3 +1,4 @@
+const { Pool } = require("pg");
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
@@ -14,6 +15,19 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
+
+const pool = new Pool({
+  connectionString: process.env.DB_HOST,
+});
+
+pool.connect((err) => {
+  if (err) {
+    console.error("Error connecting to PostgreSQL:", err);
+    process.exit(1);
+  } else {
+    console.log("PostgreSQL connected successfully");
+  }
+});
 
 app.use("/api/users", authRouter);
 app.use("/api/deals", dealsRouter);
