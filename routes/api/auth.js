@@ -1,12 +1,7 @@
 const express = require("express");
 const ctrl = require("../../controllers/auth");
 
-const {
-  validation,
-  authenticate,
-  // isValidId,
-  // upload,
-} = require("../../middlewares");
+const { validation, authenticate } = require("../../middlewares");
 const { schemas } = require("../../models/user");
 
 const router = express.Router();

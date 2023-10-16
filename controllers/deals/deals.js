@@ -21,7 +21,7 @@ const getAllDeals = async (req, res) => {
 
 const addDeal = async (req, res) => {
   const result = await Deal.create({ ...req.body });
-console.log('adding deal')
+  console.log("adding deal");
   res.status(201).json({
     status: "success",
     code: 201,
