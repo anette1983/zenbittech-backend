@@ -28,10 +28,10 @@ require("dotenv").config();
 const { PASSWORD } = process.env;
 
 const sequelize = new Sequelize({
-  database: "postgres",
-  username: "postgres",
+  database: "zenbittech_prsf",
+  username: "zenbittech_prsf_user",
   password: PASSWORD,
-  host: "0.0.0.0/0",
+  host: "dpg-ckmlm40u1l6c73bg34hg-a",
   dialect: "postgres",
 });
 
