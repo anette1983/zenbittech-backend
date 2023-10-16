@@ -2,6 +2,7 @@ const { register } = require("./auth");
 const { verifyEmail } = require("./auth");
 const { login } = require("./auth");
 const { getCurrent } = require("./auth");
+const { getAllUsers } = require("./auth");
 const { logout } = require("./auth");
 // const { updateSubscription } = require("./auth");
 // const { updateAvatar } = require("./auth");
@@ -13,6 +14,7 @@ module.exports = {
   resendVerifyEmail,
   login,
   getCurrent,
+  getAllUsers,
   logout,
   // updateSubscription,
   // updateAvatar,

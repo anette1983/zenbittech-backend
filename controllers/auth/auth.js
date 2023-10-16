@@ -106,6 +106,18 @@ const login = async (req, res) => {
   });
 };
 
+const getAllUsers = async (req, res) => {
+  const users = await User.findAll();
+
+  res.status(200).json({
+    status: "success",
+    code: 200,
+    data: {
+      result: users,
+    },
+  });
+};
+
 const getCurrent = async (req, res) => {
   const { email } = req.user;
   res.json({
@@ -132,6 +144,7 @@ module.exports = {
   verifyEmail: ctrlWrapper(verifyEmail),
   resendVerifyEmail: ctrlWrapper(resendVerifyEmail),
   login: ctrlWrapper(login),
+  getAllUsers: ctrlWrapper(getAllUsers),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
 };
@@ -145,5 +158,3 @@ module.exports = {
 // createDeal(deals[0]);
 
 // [{ deal1 }, { deal2 }].forEach(createDeal);
-
-
