@@ -31,7 +31,7 @@ const sequelize = new Sequelize({
   database: "postgres",
   username: "postgres",
   password: PASSWORD,
-  host: "db",
+  host: "db-zenbittech-backend.onrender.com",
   dialect: "postgres",
 });
 
