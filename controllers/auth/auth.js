@@ -145,3 +145,5 @@ module.exports = {
 // createDeal(deals[0]);
 
 // [{ deal1 }, { deal2 }].forEach(createDeal);
+
+

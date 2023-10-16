@@ -25,13 +25,13 @@
 const { Sequelize } = require("sequelize");
 
 require("dotenv").config();
-const { PASSWORD, DB_HOST } = process.env;
+const { PASSWORD } = process.env;
 
-const sequelize = new Sequelize(DB_HOST, {
+const sequelize = new Sequelize({
   database: "postgres",
   username: "postgres",
   password: PASSWORD,
-  host: "db",
+  host: "0.0.0.0",
   dialect: "postgres",
 });
 
